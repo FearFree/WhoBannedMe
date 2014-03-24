@@ -76,7 +76,7 @@ public class BanLookup {
 		    
 		    if(i > 0){
 			for(Player p : Bukkit.getOnlinePlayers()){
-			    if(p.hasPermission("whobannedme.notify") && i > plugin.maxBans || p.hasPermission("whobannedme.notify.all")){
+			    if(p.hasPermission("whobannedme.notify") && i > plugin.minBans || p.hasPermission("whobannedme.notify.all")){
 				p.sendMessage("Connected player " + pName + " has " + output.get("totalbans") + "bans. To view ban details, visit " + detailURL);
 			    }
 			}

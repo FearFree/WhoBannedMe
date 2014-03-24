@@ -14,7 +14,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     private File config;
     private Player player;
     private BanLookup lookup;
-    public int maxBans;
+    public int minBans;
     public boolean debugMode;
     public boolean consoleOutput;
     
@@ -34,7 +34,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
         
         if (debugMode == true){
             getLogger().log(Level.INFO, "Debug mode enabled");
-            getLogger().log(Level.INFO, "Max bans setting: {0}", maxBans);
+            getLogger().log(Level.INFO, "Minimum bans setting: {0}", minBans);
         }
 	
 	try {
@@ -74,7 +74,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     }
 
     public void load() {
-        maxBans = getConfig().getInt("max-bans");
+        minBans = getConfig().getInt("minimum-bans");
         debugMode = getConfig().getBoolean("debug-mode");
 	consoleOutput = getConfig().getBoolean("console-output");
     }

@@ -1,7 +1,7 @@
-#Comments here
+#Configuration file for WhoBannedMe.
 
-#Maximum number of bans player can have and still login.
-max-bans: 3
+#Minimum number of bans before triggering message to players with whobannedme.notify
+minimum-bans: 3
 
 #Output scan results to console?
 console-output: false
