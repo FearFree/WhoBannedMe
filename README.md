@@ -46,7 +46,7 @@ Find our source on <a href="https://github.com/FearFree/WhoBannedMe">Github!</a>
 
 **Data collection**
 
-RandomGift uses Plugin Metrics that collects anonymous statistic data about the
+WhoBannedMe uses Plugin Metrics that collects anonymous statistic data about the
 plugins usage and sends it to [http://mcstats.org/plugin/WhoBannedMe](http://mcstats.org/plugin/whobannedme)
 
 **Planned Additions**
