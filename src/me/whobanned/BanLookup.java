@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,7 +19,6 @@ import org.json.simple.parser.ParseException;
 public class BanLookup {
     
     private final WhoBannedMe plugin;
-    private String apiURL;
     
     URL checkURL = null;
     URLConnection connection = null;
@@ -31,11 +31,14 @@ public class BanLookup {
     
     public void check(Player player) throws IOException {
         String pName = player.getName();
-        //if (player.hasPermission("whobannedme.exempt")){
-        //    return;
-        //}
+        if (player.hasPermission("whobannedme.exempt")){
+	    if(plugin.debugMode == true){
+		plugin.getLogger().info("Player check cancelled by permissions");
+	    }
+            return;
+        }
 	try{
-	    checkURL = new URL("http://api.fishbans.com/stat/" + pName + "/");
+	    checkURL = new URL("http://api.fishbans.com/stats/" + pName + "/");
 	} catch (MalformedURLException e) {
 	    return;
 	}
@@ -51,7 +54,8 @@ public class BanLookup {
 	    try {
 		JSONParser j = new JSONParser();
 		JSONObject o = (JSONObject)j.parse(response);
-		if(o.get("success") != "true"){
+		boolean b = (boolean) o.get("success");
+		if(b != true){
 		    plugin.getLogger().log(Level.WARNING, "Error: {0}", o.get("error"));
 		    return;
 		} 
@@ -62,7 +66,24 @@ public class BanLookup {
 			plugin.getLogger().log(Level.INFO, "Player UUID: {0}", output.get("uuid"));
 			plugin.getLogger().log(Level.INFO, "Total Bans: {0}", output.get("totalbans"));
 		    }
+		    int i = (int) output.get("totalbans");
+		    String detailURL = "http://fishbans.com/u/" + pName;
+		    
+		    if(i > 0){
+			for(Player p : Bukkit.getOnlinePlayers()){
+			    if(p.hasPermission("whobannedme.notify") && i > plugin.maxBans || p.hasPermission("whobannedme.notify.all")){
+				p.sendMessage("Connected player " + pName + " has " + output.get("totalbans") + "bans. To view ban details, visit " + detailURL);
+			    }
+			}
+		    } else {
+			for(Player p : Bukkit.getOnlinePlayers()){
+			    if(p.hasPermission("whobannedme.notify.all")){
+				p.sendMessage("Conected player " + pName + " has no bans on record.");
+			    }
+			}
+		    }
 		}
+		
 	    } catch (ParseException ex) {
 		Logger.getLogger(BanLookup.class.getName()).log(Level.SEVERE, null, ex);
 	    }

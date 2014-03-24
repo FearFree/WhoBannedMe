@@ -36,6 +36,14 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
             getLogger().log(Level.INFO, "Debug mode enabled");
             getLogger().log(Level.INFO, "Max bans setting: {0}", maxBans);
         }
+	
+	try {
+	    MetricsLite metrics = new MetricsLite(this);
+	    metrics.start();
+	} catch (IOException e) {
+	    // Failed to submit the stats :-(
+	}
+	
         getLogger().log(Level.INFO, "WhoBannedMe Loaded!");
     }
     

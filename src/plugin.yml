@@ -1,4 +1,17 @@
 name: WhoBannedMe
 main: me.whobanned.WhoBannedMe
-version: Dev1.0
+version: 1.0
 author: FearFree
+
+permissions:
+    whobannedme.exempt:
+        description: Allows bypassing the ban check on login
+        default: op
+    
+    whobannedme.notify:
+        description: Allows users to see warning when bans are found
+        default: false
+        
+    whobannedme.notify.all:
+        description: Allows users to see all bans found, regardless of minimum-ban setting
+        default: op
