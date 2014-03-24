@@ -1,0 +1,7 @@
+#Comments here
+
+#Maximum number of bans player can have and still login.
+max-bans: 3
+
+#Debug mode.  This will output lots of text to the console.
+debug-mode: true
