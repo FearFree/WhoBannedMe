@@ -1,6 +1,7 @@
 package me.whobanned;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     private BanLookup lookup;
     public int maxBans;
     public boolean debugMode;
+    public boolean consoleOutput;
     
     @Override
     public void onEnable(){
@@ -45,12 +47,19 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         player = event.getPlayer();
-        getLogger().log(Level.INFO, "Player {0} has connected and is being scanned.", player.getName());
+	lookup = new BanLookup(this);
+	if(debugMode == true){
+	    getLogger().log(Level.INFO, "Player {0} has connected and is being scanned.", player.getName());
+	}
         getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
 
             @Override
             public void run() {
-                lookup.check(player);
+		try{
+		    lookup.check(player);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
             }
             
         }, 30L);
@@ -59,5 +68,6 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     public void load() {
         maxBans = getConfig().getInt("max-bans");
         debugMode = getConfig().getBoolean("debug-mode");
+	consoleOutput = getConfig().getBoolean("console-output");
     }
 }
