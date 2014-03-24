@@ -1,4 +1,4 @@
 WhoBannedMe
 ===========
 
-Craftbukkit plugin to interface with FishBans API
+Craftbukkit plugin to interface with FishBans API.
