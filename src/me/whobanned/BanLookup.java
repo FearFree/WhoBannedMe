@@ -57,6 +57,11 @@ public class BanLookup {
 		boolean b = (boolean) o.get("success");
 		if(b != true){
 		    plugin.getLogger().log(Level.WARNING, "Error: {0}", o.get("error"));
+		    for(Player p : Bukkit.getOnlinePlayers()){
+			if(p.hasPermission("whobannedme.notify.all")){
+			    p.sendMessage("Error checking " + pName + ": " + o.get("error"));
+			}
+		    }
 		    return;
 		} 
 		if(o.get("stats") != null){
