@@ -5,6 +5,9 @@ jdk:
   - openjdk7
 script: mvn compile test
 install: true
+branches:
+  only:
+    - master
 notifications:
   irc: 
     channels: 
