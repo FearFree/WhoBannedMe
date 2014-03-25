@@ -9,6 +9,7 @@ install: true
 notifications:
   irc: 
     channels: 
-      - "irc.esper.net#fearfree"
+      - "irc.esper.net#FearFree"
     on_success: always
     on_failure: always
+    
