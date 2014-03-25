@@ -1,0 +1,14 @@
+language: java
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+  - openjdk7
+  - openjdk6
+script: mvn compile test
+install: true
+notifications:
+  irc: 
+    channels: 
+      - "irc.esper.net#fearfree"
+    on_success: always
+    on_failure: always
