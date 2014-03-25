@@ -59,7 +59,7 @@
 	      <replacements>
 		  <replacement>
 		      <token>DevBuild</token>
-		      <value>${buildnumber}</value>
+		      <value>${buildNumber}</value>
 		  </replacement>
 		  <replacement>
 		      <token>$${buildnumber}</token>
