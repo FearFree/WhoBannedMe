@@ -48,7 +48,7 @@
 	  <version>1.5.2</version>
 	  <executions>
 		<execution>
-		    <phase>package</phase>
+		    <phase>install</phase>
 		    <goals>
 			<goal>replace</goal>
 		    </goals>
