@@ -59,7 +59,7 @@
 	      <replacements>
 		  <replacement>
 		      <token>DevBuild</token>
-		      <value>${DRONE_BUILD_NUMBER}</value>
+		      <value>${buildnum}</value>
 		  </replacement>
 	      </replacements>
 	  </configuration>
