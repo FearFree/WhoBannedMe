@@ -61,6 +61,10 @@
 		      <token>DevBuild</token>
 		      <value>${buildnumber}</value>
 		  </replacement>
+		  <replacement>
+		      <token>$${buildnumber}</token>
+		      <value>${buildnumber}</value>
+		  </replacement>
 	      </replacements>
 	  </configuration>
 	  <inherited>false</inherited>
