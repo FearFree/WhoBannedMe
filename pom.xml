@@ -59,7 +59,7 @@
 	      <replacements>
 		  <replacement>
 		      <token>DevBuild</token>
-		      <value>herptst</value>
+		      <value>${build.number}</value>
 		  </replacement>
 	      </replacements>
 	  </configuration>
