@@ -3,6 +3,7 @@ package me.whobanned;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +18,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     public int minBans;
     public boolean debugMode;
     public boolean consoleOutput;
+    public String broadcastTag = ChatColor.RED + "[WhoBannedMe] " + ChatColor.GRAY;
     
     @Override
     public void onEnable(){

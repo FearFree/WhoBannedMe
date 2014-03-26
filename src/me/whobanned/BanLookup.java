@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,6 +33,11 @@ public class BanLookup {
     public void check(Player player) throws IOException {
         String pName = player.getName();
         if (player.hasPermission("whobannedme.exempt")){
+	    for(Player p : Bukkit.getOnlinePlayers()){
+		if(p.hasPermission("whobannedme.notify.all")){
+		    p.sendMessage(plugin.broadcastTag + "Conected player " + ChatColor.YELLOW + pName + ChatColor.GRAY +" is exempt from ban lookups.");
+		}
+	    }
 	    if(plugin.debugMode == true){
 		plugin.getLogger().info("Player check cancelled by permissions");
 	    }
@@ -77,13 +83,13 @@ public class BanLookup {
 		    if(i > 0){
 			for(Player p : Bukkit.getOnlinePlayers()){
 			    if(p.hasPermission("whobannedme.notify") && i > plugin.minBans || p.hasPermission("whobannedme.notify.all")){
-				p.sendMessage("Connected player " + pName + " has " + output.get("totalbans") + "bans. To view ban details, visit " + detailURL);
+				p.sendMessage(plugin.broadcastTag + "Connected player " + ChatColor.RED + pName + ChatColor.GRAY + " has " + output.get("totalbans") + "bans. To view ban details, visit " + detailURL);
 			    }
 			}
 		    } else {
 			for(Player p : Bukkit.getOnlinePlayers()){
 			    if(p.hasPermission("whobannedme.notify.all")){
-				p.sendMessage("Conected player " + pName + " has no bans on record.");
+				p.sendMessage(plugin.broadcastTag + "Conected player " + ChatColor.GREEN + pName + ChatColor.GRAY +" has no bans on record.");
 			    }
 			}
 		    }
