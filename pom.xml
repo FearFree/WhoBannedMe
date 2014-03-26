@@ -59,11 +59,11 @@
 	      <replacements>
 		  <replacement>
 		      <token>DevBuild</token>
-		      <value>${bamboo.herp}</value>
+		      <value>${buildnumber}</value>
 		  </replacement>
 		  <replacement>
-		      <token>$${bamboo.herp}</token>
-		      <value>${bamboo.herp}</value>
+		      <token>$${buildnumber}</token>
+		      <value>${buildnumber}</value>
 		  </replacement>
 	      </replacements>
 	  </configuration>
