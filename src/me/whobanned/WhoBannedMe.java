@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class WhoBannedMe extends JavaPlugin implements Listener {
-    
+
     private File config;
     private Player player;
     private BanLookup lookup;
@@ -19,66 +19,66 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     public boolean debugMode;
     public boolean consoleOutput;
     public String broadcastTag = ChatColor.RED + "[WhoBannedMe] " + ChatColor.GRAY;
-    
+
     @Override
-    public void onEnable(){
-        
+    public void onEnable() {
+
         config = new File(getDataFolder(), "config.yml");
-        
+
         if (!(config.exists())) {
             getLogger().log(Level.INFO, "Configuration not found! Creating default config.yml");
             this.saveDefaultConfig();
         }
-        
+
         load();
-        
+
         getServer().getPluginManager().registerEvents(this, this);
-        
-        if (debugMode == true){
+
+        if (debugMode == true) {
             getLogger().log(Level.INFO, "Debug mode enabled");
             getLogger().log(Level.INFO, "Minimum bans setting: {0}", minBans);
         }
-	
-	try {
-	    MetricsLite metrics = new MetricsLite(this);
-	    metrics.start();
-	} catch (IOException e) {
-	    // Failed to submit the stats :-(
-	}
-	
+
+        try {
+            MetricsLite metrics = new MetricsLite(this);
+            metrics.start();
+        } catch (IOException e) {
+            // Failed to submit the stats :-(
+        }
+
         getLogger().log(Level.INFO, "WhoBannedMe Loaded!");
     }
-    
+
     @Override
-    public void onDisable(){
+    public void onDisable() {
         getLogger().log(Level.INFO, "WhoBannedMe Stopped!");
     }
-    
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         player = event.getPlayer();
-	lookup = new BanLookup(this);
-	if(debugMode == true){
-	    getLogger().log(Level.INFO, "Player {0} has connected and is being scanned.", player.getName());
-	}
-        getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
+        lookup = new BanLookup(this);
+        if (debugMode == true) {
+            getLogger().log(Level.INFO, "Player {0} has connected and is being scanned.", player.getName());
+        }
+        getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 
             @Override
             public void run() {
-		try{
-		    lookup.check(player);
+                try {
+                    lookup.check(player);
                     lookup.notify(player);
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            
+
         }, 30L);
     }
 
     public void load() {
         minBans = getConfig().getInt("minimum-bans");
         debugMode = getConfig().getBoolean("debug-mode");
-	consoleOutput = getConfig().getBoolean("console-output");
+        consoleOutput = getConfig().getBoolean("console-output");
     }
 }

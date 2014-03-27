@@ -16,11 +16,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
 public class BanLookup {
-    
+
     private final WhoBannedMe plugin;
-    
+
     URL checkURL = null;
     URLConnection connection = null;
     BufferedReader reader = null;
@@ -29,90 +28,90 @@ public class BanLookup {
     private Object error = null;
     private boolean exempt = false;
     private int totalBans;
-    
-    public BanLookup(WhoBannedMe plugin){
-	this.plugin = plugin;
+
+    public BanLookup(WhoBannedMe plugin) {
+        this.plugin = plugin;
     }
-    
+
     public void check(Player player) throws IOException {
         String pName = player.getName();
-        if (player.hasPermission("whobannedme.exempt")){
-            
+        if (player.hasPermission("whobannedme.exempt")) {
+
             exempt = true;
-	    
-	    if(plugin.debugMode == true || plugin.consoleOutput == true){
-		plugin.getLogger().info("Player check cancelled by permissions");
-	    }
+
+            if (plugin.debugMode == true || plugin.consoleOutput == true) {
+                plugin.getLogger().info("Player check cancelled by permissions");
+            }
             return;
         }
-	try{
-	    checkURL = new URL("http://api.fishbans.com/stats/" + pName + "/");
-	} catch (MalformedURLException e) {
-	    return;
-	}
-	try{
-	    connection = checkURL.openConnection();
-	    connection.setReadTimeout(5000);
-	    reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-	    response = reader.readLine();
-	} catch (IOException e) {
-	    plugin.getLogger().warning("Could not reach ban server!");
-	}
+        try {
+            checkURL = new URL("http://api.fishbans.com/stats/" + pName + "/");
+        } catch (MalformedURLException e) {
+            return;
+        }
+        try {
+            connection = checkURL.openConnection();
+            connection.setReadTimeout(5000);
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            response = reader.readLine();
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not reach ban server!");
+        }
         try {
             JSONParser j = new JSONParser();
-            JSONObject o = (JSONObject)j.parse(response);
+            JSONObject o = (JSONObject) j.parse(response);
             success = (boolean) o.get("success");
-            if(success != true){
+            if (success != true) {
                 error = o.get("error");
                 plugin.getLogger().log(Level.WARNING, "Error: {0}", error);
                 return;
             } else {
-                if(plugin.debugMode == true){
+                if (plugin.debugMode == true) {
                     plugin.getLogger().log(Level.INFO, "Result found!");
                 }
             }
-            if(o.get("stats") != null){
-                Map output = (Map)o.get("stats");
-                if(plugin.consoleOutput == true || plugin.debugMode == true){
+            if (o.get("stats") != null) {
+                Map output = (Map) o.get("stats");
+                if (plugin.consoleOutput == true || plugin.debugMode == true) {
                     plugin.getLogger().log(Level.INFO, "Player Name: {0}", output.get("username"));
                     plugin.getLogger().log(Level.INFO, "Player UUID: {0}", output.get("uuid"));
                     plugin.getLogger().log(Level.INFO, "Total Bans: {0}", output.get("totalbans"));
                 }
-                
+
                 totalBans = (int) output.get("totalbans");
-                
+
             }
         } catch (ParseException ex) {
             Logger.getLogger(BanLookup.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void notify (Player player) throws IOException {
+
+    public void notify(Player player) throws IOException {
         String pName = player.getName();
-        if(error != null){
-            for(Player p : Bukkit.getOnlinePlayers()){
-                if(p.hasPermission("whobannedme.notify.all")){
+        if (error != null) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (p.hasPermission("whobannedme.notify.all")) {
                     p.sendMessage("Error checking " + pName + ": " + error);
                 }
             }
         }
-        
-        if(exempt = true){
-            for(Player p : Bukkit.getOnlinePlayers()){
-		if(p.hasPermission("whobannedme.notify.all")){
-		    p.sendMessage(plugin.broadcastTag + "Conected player " + ChatColor.YELLOW + pName + ChatColor.GRAY +" is exempt from ban lookups.");
-		}
-	    }
+
+        if (exempt = true) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (p.hasPermission("whobannedme.notify.all")) {
+                    p.sendMessage(plugin.broadcastTag + "Conected player " + ChatColor.YELLOW + pName + ChatColor.GRAY + " is exempt from ban lookups.");
+                }
+            }
         }
-        
-        if(error != null){
-            for(Player p : Bukkit.getOnlinePlayers()){
-                if(p.hasPermission("whobannedme.notify.all")){
+
+        if (error != null) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (p.hasPermission("whobannedme.notify.all")) {
                     p.sendMessage("Error checking " + pName + ": " + error);
                 }
             }
         }
-        
+
         String detailURL = "http://fishbans.com/u/" + pName;
         if (totalBans > 0) {
             for (Player p : Bukkit.getOnlinePlayers()) {
