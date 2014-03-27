@@ -34,6 +34,7 @@ public class BanLookup {
     }
 
     public void check(Player player) throws IOException {
+	exempt = false;
         String pName = player.getName();
         if (player.hasPermission("whobannedme.exempt")) {
 
@@ -78,7 +79,7 @@ public class BanLookup {
                     plugin.getLogger().log(Level.INFO, "Total Bans: {0}", output.get("totalbans"));
                 }
 
-                totalBans = (int) output.get("totalbans");
+                totalBans = Integer.valueOf(String.valueOf(output.get("totalbans")));
 
             }
         } catch (ParseException ex) {
@@ -94,14 +95,16 @@ public class BanLookup {
                     p.sendMessage("Error checking " + pName + ": " + error);
                 }
             }
+	    return;
         }
 
-        if (exempt = true) {
+        if (exempt != false) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.hasPermission("whobannedme.notify.all")) {
                     p.sendMessage(plugin.broadcastTag + "Conected player " + ChatColor.YELLOW + pName + ChatColor.GRAY + " is exempt from ban lookups.");
                 }
             }
+	    return;
         }
 
         if (error != null) {
@@ -110,6 +113,7 @@ public class BanLookup {
                     p.sendMessage("Error checking " + pName + ": " + error);
                 }
             }
+	    return;
         }
 
         String detailURL = "http://fishbans.com/u/" + pName;
