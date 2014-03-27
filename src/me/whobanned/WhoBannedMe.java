@@ -15,7 +15,9 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     private File config;
     private Player player;
     private BanLookup lookup;
+    private final UpdateCheck update = new UpdateCheck(this);
     public int minBans;
+    public boolean updateCheck;
     public boolean debugMode;
     public boolean consoleOutput;
     public String broadcastTag = ChatColor.RED + "[WhoBannedMe] " + ChatColor.GRAY;
@@ -31,6 +33,8 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
         }
 
         load();
+	update.check();
+	
 
         getServer().getPluginManager().registerEvents(this, this);
 
@@ -78,6 +82,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
 
     public void load() {
         minBans = getConfig().getInt("minimum-bans");
+	updateCheck = getConfig().getBoolean("update-check");
         debugMode = getConfig().getBoolean("debug-mode");
         consoleOutput = getConfig().getBoolean("console-output");
     }

@@ -1,6 +1,6 @@
 name: WhoBannedMe
 main: me.whobanned.WhoBannedMe
-version: DevBuild
+version: 1.0.13
 author: FearFree
 
 permissions:

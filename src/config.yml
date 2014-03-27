@@ -7,4 +7,7 @@ minimum-bans: 3
 console-output: false
 
 #Debug mode.  This will output lots of text to the console.
-debug-mode: true
+debug-mode: false
+
+#Check for updates?
+update-check: true
