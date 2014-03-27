@@ -67,6 +67,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
             public void run() {
 		try{
 		    lookup.check(player);
+                    lookup.notify(player);
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
