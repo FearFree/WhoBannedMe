@@ -8,6 +8,7 @@ install: true
 branches:
   only:
     - master
+    - dev
 notifications:
   irc: 
     channels: 
