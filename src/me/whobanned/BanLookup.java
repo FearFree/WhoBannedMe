@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
 public class BanLookup {
 
     private final WhoBannedMe plugin;
@@ -33,9 +34,9 @@ public class BanLookup {
         this.plugin = plugin;
     }
 
-    public void check(Player player) throws IOException {
+    public void check(String pName) throws IOException {
 	exempt = false;
-        String pName = player.getName();
+        Player player = Bukkit.getPlayer(pName);
         if (player.hasPermission("whobannedme.exempt")) {
 
             exempt = true;
