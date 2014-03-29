@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -33,17 +34,20 @@ public class BanLookup {
         this.plugin = plugin;
     }
 
-    public void check(Player player) throws IOException {
-	exempt = false;
-        String pName = player.getName();
-        if (player.hasPermission("whobannedme.exempt")) {
+    public void check(String pName) throws IOException {
+        exempt = false;
+        error = null;
+        if (Bukkit.getPlayer(pName) != null) {
+            Player player = Bukkit.getPlayer(pName);
+            if (player.hasPermission("whobannedme.exempt")) {
 
-            exempt = true;
+                exempt = true;
 
-            if (plugin.debugMode == true || plugin.consoleOutput == true) {
-                plugin.getLogger().info("Player check cancelled by permissions");
+                if (plugin.debugMode == true || plugin.consoleOutput == true) {
+                    plugin.getLogger().info("Player check cancelled by permissions");
+                }
+                return;
             }
-            return;
         }
         try {
             checkURL = new URL("http://api.fishbans.com/stats/" + pName + "/");
@@ -95,7 +99,7 @@ public class BanLookup {
                     p.sendMessage("Error checking " + pName + ": " + error);
                 }
             }
-	    return;
+            return;
         }
 
         if (exempt != false) {
@@ -104,7 +108,7 @@ public class BanLookup {
                     p.sendMessage(plugin.broadcastTag + "Conected player " + ChatColor.YELLOW + pName + ChatColor.GRAY + " is exempt from ban lookups.");
                 }
             }
-	    return;
+            return;
         }
 
         if (error != null) {
@@ -113,7 +117,7 @@ public class BanLookup {
                     p.sendMessage("Error checking " + pName + ": " + error);
                 }
             }
-	    return;
+            return;
         }
 
         String detailURL = "http://fishbans.com/u/" + pName;
@@ -129,6 +133,25 @@ public class BanLookup {
                     p.sendMessage(plugin.broadcastTag + "Conected player " + ChatColor.GREEN + pName + ChatColor.GRAY + " has no bans on record.");
                 }
             }
+        }
+    }
+
+    public void report(CommandSender sentBy, String pName) {
+        if (error != null) {
+            sentBy.sendMessage(plugin.broadcastTag + "Error checking " + pName + ": " + error);
+            return;
+        }
+
+        if (exempt != false) {
+            sentBy.sendMessage(plugin.broadcastTag + ChatColor.YELLOW + pName + ChatColor.GRAY + " is exempt from ban lookups.");
+            return;
+        }
+
+        String detailURL = "http://fishbans.com/u/" + pName;
+        if (totalBans > 0) {
+            sentBy.sendMessage(plugin.broadcastTag + ChatColor.RED + pName + ChatColor.GRAY + " has " + totalBans + " bans. To view ban details, visit " + detailURL);
+        } else {
+            sentBy.sendMessage(plugin.broadcastTag + ChatColor.GREEN + pName + ChatColor.GRAY + " has no bans on record.");
         }
     }
 }

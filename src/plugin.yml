@@ -15,3 +15,13 @@ permissions:
     whobannedme.notify.all:
         description: Allows users to see all bans found, regardless of minimum-ban setting
         default: op
+        
+    whobannedme.lookup:
+        description: Allows usage of /whobanned
+        default: op
+
+commands:
+    whobanned:
+        desciption: Used to look up a players ban history
+        usage: /<command> <username>
+        permission: whobannedme.lookup

@@ -14,13 +14,15 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
 
     private File config;
     private Player player;
-    private BanLookup lookup;
+    private String pName;
+    private BanLookup lookup = new BanLookup(this);
     private final UpdateCheck update = new UpdateCheck(this);
     public int minBans;
     public boolean updateCheck;
     public boolean debugMode;
     public boolean consoleOutput;
     public String broadcastTag = ChatColor.RED + "[WhoBannedMe] " + ChatColor.GRAY;
+    public String noPerms = broadcastTag + "You do not have permission to do that!";
 
     @Override
     public void onEnable() {
@@ -33,10 +35,10 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
         }
 
         load();
-	update.check();
-	
+        update.check();
 
         getServer().getPluginManager().registerEvents(this, this);
+        getCommand("whobanned").setExecutor(new CommandWhoBanned(this, lookup));
 
         if (debugMode == true) {
             getLogger().log(Level.INFO, "Debug mode enabled");
@@ -61,7 +63,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         player = event.getPlayer();
-        lookup = new BanLookup(this);
+        pName = player.getName();
         if (debugMode == true) {
             getLogger().log(Level.INFO, "Player {0} has connected and is being scanned.", player.getName());
         }
@@ -70,7 +72,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
             @Override
             public void run() {
                 try {
-                    lookup.check(player);
+                    lookup.check(pName);
                     lookup.notify(player);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -82,7 +84,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
 
     public void load() {
         minBans = getConfig().getInt("minimum-bans");
-	updateCheck = getConfig().getBoolean("update-check");
+        updateCheck = getConfig().getBoolean("update-check");
         debugMode = getConfig().getBoolean("debug-mode");
         consoleOutput = getConfig().getBoolean("console-output");
     }
