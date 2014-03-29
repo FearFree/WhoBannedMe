@@ -22,10 +22,9 @@ public class CommandWhoBanned implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("whobanned") && sentBy.hasPermission("whobannedme.lookup")) {
             if (args.length == 1) {
                 pName = args[0];
-                plugin.getLogger().log(Level.INFO, "pName variable from CommandWhoBanned: {0}", pName);//debugcode
                 try {
-                    plugin.getLogger().log(Level.INFO, "Variable pName inside try: {0}", pName);
                     lookup.check(pName);
+                    lookup.report(sentBy, pName);
                 } catch (IOException ex) {
                 ex.printStackTrace();
                 }

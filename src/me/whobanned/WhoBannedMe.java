@@ -15,7 +15,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     private File config;
     private Player player;
     private String pName;
-    private BanLookup lookup;
+    private BanLookup lookup = new BanLookup(this);
     private final UpdateCheck update = new UpdateCheck(this);
     public int minBans;
     public boolean updateCheck;
@@ -35,12 +35,10 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
         }
 
         load();
-	update.check();
-	
+        update.check();
 
         getServer().getPluginManager().registerEvents(this, this);
         getCommand("whobanned").setExecutor(new CommandWhoBanned(this, lookup));
-
 
         if (debugMode == true) {
             getLogger().log(Level.INFO, "Debug mode enabled");
@@ -66,7 +64,6 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         player = event.getPlayer();
         pName = player.getName();
-        lookup = new BanLookup(this);
         if (debugMode == true) {
             getLogger().log(Level.INFO, "Player {0} has connected and is being scanned.", player.getName());
         }
@@ -87,7 +84,7 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
 
     public void load() {
         minBans = getConfig().getInt("minimum-bans");
-	updateCheck = getConfig().getBoolean("update-check");
+        updateCheck = getConfig().getBoolean("update-check");
         debugMode = getConfig().getBoolean("debug-mode");
         consoleOutput = getConfig().getBoolean("console-output");
     }
