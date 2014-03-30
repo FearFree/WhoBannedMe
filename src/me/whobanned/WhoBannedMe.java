@@ -26,6 +26,12 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        if (this.getServer().getOnlineMode() != true) {
+            this.getLogger().warning("***********************************************");
+            this.getLogger().warning(" Results may not be accurate in offline mode!  ");
+            this.getLogger().warning("Please set online-mode to true for best results");
+            this.getLogger().warning("***********************************************");
+        }
 
         config = new File(getDataFolder(), "config.yml");
 
