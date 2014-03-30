@@ -7,7 +7,7 @@ script: mvn compile test
 install: true
 branches:
   only:
-    - master
+    - release
     - dev
 notifications:
   irc: 
