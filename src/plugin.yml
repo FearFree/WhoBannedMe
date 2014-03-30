@@ -17,11 +17,19 @@ permissions:
         default: op
         
     whobannedme.lookup:
-        description: Allows usage of /whobanned
+        description: Allows usage of /whobanned <playername>
         default: op
+        
+    whobannedme.lookup.details:
+        description: Allows usage of /whobanned details <playername>
 
 commands:
     whobanned:
         desciption: Used to look up a players ban history
-        usage: /<command> <username>
+        usage: /whobanned <username>
         permission: whobannedme.lookup
+        
+    whobanned details:
+        description: Get detailed ban history report
+        usage: /whobanned details <username>
+        permission: whobanned.lookup.details
