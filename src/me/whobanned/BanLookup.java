@@ -42,6 +42,7 @@ public class BanLookup {
     public void check(String pName) throws IOException {
         exempt = false;
         error = null;
+        totalBans = 0;
         if (Bukkit.getPlayer(pName) != null) {
             Player player = Bukkit.getPlayer(pName);
             if (player.hasPermission("whobannedme.exempt")) {
@@ -82,10 +83,11 @@ public class BanLookup {
             }
             if (o.get("stats") != null) {
                 Map output = (Map) o.get("stats");
+                username = output.get("username");
+                UUID = output.get("uuid");
+                totalBans = Integer.valueOf(String.valueOf(output.get("totalbans")));
+
                 if (plugin.consoleOutput == true || plugin.debugMode == true) {
-                    username = output.get("username");
-                    UUID = output.get("uuid");
-                    totalBans = Integer.valueOf(String.valueOf(output.get("totalbans")));
                     plugin.getLogger().log(Level.INFO, "Player Name: {0}", username);
                     plugin.getLogger().log(Level.INFO, "Player UUID: {0}", UUID);
                     plugin.getLogger().log(Level.INFO, "Total Bans: {0}", totalBans);
