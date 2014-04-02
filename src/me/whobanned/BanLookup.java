@@ -106,6 +106,7 @@ public class BanLookup {
             Player player = Bukkit.getPlayer(pName);
             if (player.hasPermission("whobannedme.exempt")) {
                 exempt = true;
+                sentBy.sendMessage(plugin.broadcastTag + ChatColor.YELLOW + pName + ChatColor.GRAY + " is exempt from ban lookups");
 
                 if (plugin.debugMode == true || plugin.consoleOutput == true) {
                     plugin.getLogger().info("Player check cancelled by permissions");
@@ -126,7 +127,10 @@ public class BanLookup {
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             response = reader.readLine();
         } catch (IOException e) {
-            plugin.getLogger().warning("Could not reach ban server!");
+            if (plugin.debugMode == true) {
+                plugin.getLogger().warning("Could not reach ban server!");
+            }
+            sentBy.sendMessage(plugin.broadcastTag + ChatColor.RED + "Could not reach ban server, try again in a few minutes.");
         }
 
         try {
@@ -135,7 +139,10 @@ public class BanLookup {
             success = (boolean) o.get("success");
             if (success != true) {
                 error = o.get("error");
-                plugin.getLogger().log(Level.WARNING, "Error: {0}", error);
+                if (plugin.debugMode == true || plugin.consoleOutput == true) {
+                    plugin.getLogger().log(Level.WARNING, "Error: {0}", error);
+                }
+                sentBy.sendMessage(ChatColor.RED + "Error: " + ChatColor.GRAY + error);
                 return;
             } else {
                 if (plugin.debugMode == true) {
