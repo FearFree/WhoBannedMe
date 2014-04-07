@@ -83,11 +83,11 @@ public class WhoBannedMe extends JavaPlugin implements Listener {
             public void run() {
                 try {
                     lookup.check(pName);
-                    if (lookup.totalBans > maxBans) {
+                    if (lookup.totalBans > maxBans && maxBans != -1) {
                         try { //New ban method
                             Bukkit.getBanList(BanList.Type.NAME).addBan(pName, overBansMessage, null, "WhoBannedMe");
                         } catch (java.lang.NoClassDefFoundError e) {
-                            player.setBanned(true);
+                            player.setBanned(true); //Old ban method
                             if (debugMode = true) {
                                 getLogger().info("Using legacy ban method.");
                             }

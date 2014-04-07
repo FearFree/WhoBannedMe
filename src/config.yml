@@ -4,6 +4,7 @@
 minimum-bans: 3
 
 #Maximum bans allowed to connect.  Anyone with more bans than this will not be able to connect.
+#Set to -1 to disable this feature
 maximum-bans: 10
 
 #Message to send to players that try to connect, but have too many bans.
