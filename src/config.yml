@@ -3,6 +3,12 @@
 #Minimum number of bans before triggering message to players with whobannedme.notify
 minimum-bans: 3
 
+#Maximum bans allowed to connect.  Anyone with more bans than this will not be able to connect.
+maximum-bans: 10
+
+#Message to send to players that try to connect, but have too many bans.
+maximum-bans-message: Too many bans!
+
 #Output scan results to console?
 console-output: false
 

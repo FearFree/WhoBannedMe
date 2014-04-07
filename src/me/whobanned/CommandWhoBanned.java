@@ -20,6 +20,18 @@ public class CommandWhoBanned implements CommandExecutor {
     public boolean onCommand(CommandSender sentBy, Command command, String string, String[] args) {
         if (command.getName().equalsIgnoreCase("whobanned")) {
             if (args.length == 1) {
+                
+                if (args[0].equalsIgnoreCase("reload")) {
+                    if (sentBy.hasPermission("whobannedme.reload")) {
+                        plugin.reloadConfig();
+                        plugin.load();
+                        sentBy.sendMessage(plugin.broadcastTag + "Configuration reloaded.");
+                    } else {
+                        sentBy.sendMessage(plugin.noPerms);
+                    }
+                    return true;
+                }
+
                 if (sentBy.hasPermission("whobannedme.lookup")) {
                     pName = args[0];
 

@@ -30,7 +30,7 @@ public class BanLookup {
     private boolean success;
     private Object error = null;
     private boolean exempt = false;
-    private int totalBans;
+    int totalBans;
     private Object username;
     private Object UUID;
     private long banCount;
