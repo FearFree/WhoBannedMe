@@ -1,6 +1,6 @@
 name: WhoBannedMe
 main: me.whobanned.WhoBannedMe
-version: DevBuild
+version: ${buildnumber}
 author: FearFree
 description: Interface for Fishbans ban lookup tool.
 
