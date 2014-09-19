@@ -20,19 +20,21 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.7.2-R0.3</version>
-        </dependency>            
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
     </dependencies>
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <finalName>WhoBannedMe</finalName>
-        <resources>
-            <resource>
-                <directory>src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -43,31 +45,33 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.2</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.1</version>
                 <executions>
                     <execution>
-                        <phase>process-sources</phase>
+                        <phase>package</phase>
                         <goals>
-                            <goal>replace</goal>
+                            <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <minimizeJar>true</minimizeJar>
+                            <filters>
+                            </filters>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google.gson</pattern>
+                                    <shadedPattern>me.whobannedme.libs.com.google.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.lang3</pattern>
+                                    <shadedPattern>me.whobannedme.libs.org.apache.commons.lang3</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <filesToInclude>**/src/*</filesToInclude>
-                    <replacements>
-                        <replacement>
-                            <token>DevBuild</token>
-                            <value>${buildnumber}</value>
-                        </replacement>
-                        <replacement>
-                            <token>$${buildnumber}</token>
-                            <value>${buildnumber}</value>
-                        </replacement>
-                    </replacements>
-                </configuration>
-                <inherited>false</inherited>
             </plugin>
         </plugins>
     </build>
